@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class BytePwd {
-
+public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, updatable = false)
@@ -18,9 +17,6 @@ public class BytePwd {
     private Long id;
     private String password;
     private String email;
-    private String name;
     private String hint;
-    private String message;
-    private String logo;
 
 }

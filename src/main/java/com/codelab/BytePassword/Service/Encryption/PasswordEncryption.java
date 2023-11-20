@@ -15,7 +15,7 @@ public class PasswordEncryption {
 
     /**
      * Encodes the password
-     * @param password
+     * @param password String
      * @return
      */
     public static String encryptPwd(String password) {
