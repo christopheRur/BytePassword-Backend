@@ -9,7 +9,7 @@ import java.util.ArrayList;
 @Service
 public interface BytePwdService {
 
-    public JsonObject addUserInfo(JsonObject res);
+    public JsonObject addUserInfo(BytePwd res);
 
     public ArrayList<BytePwd> getEmailPwdList();
 

@@ -6,14 +6,16 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.NoSuchAlgorithmException;
 
+import static com.codelab.BytePassword.Constant.Constants.AES_ALGO;
+
 public class SecretKeyGenerator {
    public static SecretKey generateSecretKey(){
 
        try {
 
-           KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+           KeyGenerator keyGenerator = KeyGenerator.getInstance(AES_ALGO);
 
-           keyGenerator.init(256);
+           keyGenerator.init(128);
 
            return keyGenerator.generateKey();
 

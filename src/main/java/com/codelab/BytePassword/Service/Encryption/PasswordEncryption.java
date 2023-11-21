@@ -49,6 +49,7 @@ public class PasswordEncryption {
             cipher.init(Cipher.ENCRYPT_MODE,key);
             byte[] decodedBytes = Base64.getDecoder().decode(encryptPwd);
             byte[] decryptedBts = cipher.doFinal(decodedBytes);
+            log.info("Decrypted password========>{}", new String(decryptedBts));
             return  new String(decryptedBts);
         } catch (Exception e) {
             e.printStackTrace();

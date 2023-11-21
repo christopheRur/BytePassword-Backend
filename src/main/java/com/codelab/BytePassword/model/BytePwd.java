@@ -22,5 +22,6 @@ public class BytePwd {
     private String hint;
     private String message;
     private String logo;
+    private String timestamp;
 
 }

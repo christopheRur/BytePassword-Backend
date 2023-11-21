@@ -9,7 +9,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 
-@SpringBootApplication
+@SpringBootApplication()
 public class BytePasswordApplication {
 
 	public static void main(String[] args) {

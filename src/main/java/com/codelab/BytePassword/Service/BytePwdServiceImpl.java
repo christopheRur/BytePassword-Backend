@@ -4,6 +4,7 @@ import com.codelab.BytePassword.Messages.ErrorMsg;
 import com.codelab.BytePassword.Messages.SuccessMsg;
 import com.codelab.BytePassword.Repository.BytePwdRepository;
 import com.codelab.BytePassword.Service.Encryption.PasswordEncryption;
+import com.codelab.BytePassword.Service.Kafka.LogProducer;
 import com.codelab.BytePassword.model.BytePwd;
 import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
@@ -19,29 +20,29 @@ public class BytePwdServiceImpl implements BytePwdService {
     @Autowired
     private BytePwdRepository byteRep;
 
+    public BytePwdServiceImpl(BytePwdRepository byteRep) {
+        this.byteRep = byteRep;
+    }
+
+
     /**
      * Adds user
-     * @param res
+     * @param bytePwd
      * @return
      */
     @Override
-    public JsonObject addUserInfo(JsonObject res) {
+    public JsonObject addUserInfo(BytePwd bytePwd) {
+        log.info("-------RTRTTRTRTRRTRTRTRRTRTRTRTRTRTRTRTTRRTRT-=====- " + bytePwd.toString());
 
-        String email = String.valueOf(res.get("email"));
-        String password = PasswordEncryption.encryptPwd(String.valueOf(res.get("password")));
-        String hint = String.valueOf(res.get("hint"));
-        String message = String.valueOf(res.get("message"));
+        String password = PasswordEncryption.encryptPwd(bytePwd.getPassword());
 
-        BytePwd bytePwd = new BytePwd();
-
-        bytePwd.setEmail(email);
         bytePwd.setPassword(password);
-        bytePwd.setHint(hint);
-        bytePwd.setMessage(message);
 
-        if (byteRep.findByEmail(email).isEmpty()) {
+
+        if (byteRep.findByEmail(bytePwd.getEmail()).isEmpty()) {
+            LogProducer.produceLogs(bytePwd);
             byteRep.save(bytePwd);
-            return SuccessMsg.successMessage(String.format("User has been saved {}", email));
+            return SuccessMsg.successMessage(String.format("User has been saved {}", bytePwd.getEmail()));
         } else {
             return ErrorMsg.errorMessage("User already exists!");
         }

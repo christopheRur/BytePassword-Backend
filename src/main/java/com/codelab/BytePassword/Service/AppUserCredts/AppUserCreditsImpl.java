@@ -8,13 +8,18 @@ import com.codelab.BytePassword.model.AppUser;
 import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Slf4j
+@Service
 public class AppUserCreditsImpl implements UserServices {
 
     @Autowired
     AppUserRepository appUserRepo;
 
+    public AppUserCreditsImpl(AppUserRepository appUserRepo) {
+        this.appUserRepo = appUserRepo;
+    }
 
     /**
      * Logs out the user
@@ -47,7 +52,7 @@ public class AppUserCreditsImpl implements UserServices {
 
                     if (decryptedPwd.equals(password)) {
 
-                        res.addProperty("verified", true);
+                        res.addProperty("verified", Boolean.TRUE);
 
                         return res;
                     }
@@ -64,6 +69,7 @@ public class AppUserCreditsImpl implements UserServices {
 
     /**
      * Registers a user
+     *
      * @param res
      * @return
      */
@@ -85,7 +91,7 @@ public class AppUserCreditsImpl implements UserServices {
 
 
             if (appUserRepo.findUserByEmail(email).isEmpty()) {
-                log.info("ENCRYPTED PASSWORD ----=>{}",appUser);
+                log.info("ENCRYPTED PASSWORD ----=>{}", appUser);
                 appUserRepo.save(appUser);
                 return SuccessMsg.successMessage(String.format("User's with username {} created!", email));
             } else {

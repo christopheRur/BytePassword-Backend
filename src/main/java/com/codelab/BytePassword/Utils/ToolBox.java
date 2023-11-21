@@ -1,5 +1,11 @@
 package com.codelab.BytePassword.Utils;
 
+import lombok.extern.slf4j.Slf4j;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+
+@Slf4j
 public class ToolBox {
     /**
      * Helper method to convert bytes to hexadecimal string
@@ -15,5 +21,15 @@ public class ToolBox {
         }
 
         return strRes.toString();
+    }
+
+    public static String stampTimeOfLogs(){
+
+        LocalDateTime now = LocalDateTime.now();
+
+        String timestamp = String.valueOf(now);
+        log.info("Timestamp:-=------------------------------------- " + timestamp);
+
+        return timestamp;
     }
 }
