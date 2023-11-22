@@ -11,5 +11,8 @@ public interface BytePwdRepository extends JpaRepository<BytePwd,Long> {
 
 Optional<BytePwd> findByEmail(String email);
 Optional<BytePwd> findByHint(String hint);
+Optional<BytePwd> deleteByEmail(String email);
+
+
 
 }

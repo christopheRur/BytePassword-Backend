@@ -7,10 +7,8 @@ import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 @Slf4j
 @RestController
 public class BytePwdController {
@@ -26,10 +24,10 @@ public class BytePwdController {
 
     @PostMapping("/addCredentials")
     public ResponseEntity<?>addCredentials(@RequestBody BytePwd bodyRequest){
-        log.info("addCredentials =================================>>"+bodyRequest.toString());
+        log.info("addCredentials ---=>>"+bodyRequest.toString());
 
         try {
-            if (bodyRequest == null) {
+            if (bodyRequest.toString().isEmpty()) {
 
                 return ResponseEntity.badRequest().body("No data Found!");
 
@@ -65,6 +63,27 @@ public class BytePwdController {
             log.info("==>" + e.getLocalizedMessage());
 
             return ResponseEntity.badRequest().body("Error occurred, unable to FETCH data.");
+        }
+    }
+
+    @DeleteMapping("/deleteCredentials")
+    public ResponseEntity<?> deleteCredits(@RequestBody BytePwd bodyRequest) {
+        try {
+            if (pmService == null) {
+
+                return ResponseEntity.badRequest().body("No DATA Found!");
+
+            } else {
+
+
+                return new ResponseEntity<>(pmService.deleteEmailPwdCombo(bodyRequest), HttpStatus.OK);
+            }
+
+        } catch (Exception e) {
+
+            log.info("==>" + e.getLocalizedMessage());
+
+            return ResponseEntity.badRequest().body("Error occurred, unable to DELETE data.");
         }
     }
 

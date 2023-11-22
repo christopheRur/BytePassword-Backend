@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,9 @@ public class BytePwdServiceImpl implements BytePwdService {
     public JsonObject addUserInfo(BytePwd bytePwd) {
         log.info("-------RTRTTRTRTRRTRTRTRRTRTRTRTRTRTRTRTTRRTRT-=====- " + bytePwd.toString());
 
+        try {
+
+
         String password = PasswordEncryption.encryptPwd(bytePwd.getPassword());
 
         bytePwd.setPassword(password);
@@ -42,9 +46,15 @@ public class BytePwdServiceImpl implements BytePwdService {
         if (byteRep.findByEmail(bytePwd.getEmail()).isEmpty()) {
             LogProducer.produceLogs(bytePwd);
             byteRep.save(bytePwd);
-            return SuccessMsg.successMessage(String.format("User has been saved {}", bytePwd.getEmail()));
+            return SuccessMsg.successMessage(String.format("User "+ bytePwd.getEmail()+" has been added!"));
         } else {
-            return ErrorMsg.errorMessage("User already exists!");
+            return ErrorMsg.errorMessage("User "+ bytePwd.getEmail()+" already exists!");
+        }
+
+    } catch (Exception e) {
+            e.printStackTrace();
+            log.error("Failed to add  USER details {},{}", bytePwd.getEmail(), e.getLocalizedMessage());
+            return ErrorMsg.errorMessage("Failed to failed to add user info!");
         }
     }
 
@@ -59,13 +69,15 @@ public class BytePwdServiceImpl implements BytePwdService {
     /**
      * Deletes email password combo
      */
+    @Transactional
     @Override
     public JsonObject deleteEmailPwdCombo(BytePwd bytePwd) {
 
         try {
 
+
             if (byteRep.findByEmail(bytePwd.getEmail()).isPresent()) {
-                byteRep.delete(bytePwd);
+                byteRep.deleteByEmail(bytePwd.getEmail());
                 return SuccessMsg.successMessage("User removed!");
             } else {
                 return ErrorMsg.errorMessage("Failed to remove user!");
