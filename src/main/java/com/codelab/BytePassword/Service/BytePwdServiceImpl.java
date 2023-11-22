@@ -4,6 +4,7 @@ import com.codelab.BytePassword.Messages.ErrorMsg;
 import com.codelab.BytePassword.Messages.SuccessMsg;
 import com.codelab.BytePassword.Repository.BytePwdRepository;
 import com.codelab.BytePassword.Service.Encryption.PasswordEncryption;
+import com.codelab.BytePassword.Service.Kafka.LogConsumer;
 import com.codelab.BytePassword.Service.Kafka.LogProducer;
 import com.codelab.BytePassword.model.BytePwd;
 import com.google.gson.JsonObject;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+
+import static com.codelab.BytePassword.Constant.Constants.*;
 
 @Slf4j
 @Service
@@ -33,7 +36,6 @@ public class BytePwdServiceImpl implements BytePwdService {
      */
     @Override
     public JsonObject addUserInfo(BytePwd bytePwd) {
-        log.info("-------RTRTTRTRTRRTRTRTRRTRTRTRTRTRTRTRTTRRTRT-=====- " + bytePwd.toString());
 
         try {
 
@@ -44,8 +46,10 @@ public class BytePwdServiceImpl implements BytePwdService {
 
 
         if (byteRep.findByEmail(bytePwd.getEmail()).isEmpty()) {
-            LogProducer.produceLogs(bytePwd);
+
             byteRep.save(bytePwd);
+            bytePwd.setAction(ADD_COMBO_PWD_EMAIL);
+            LogProducer.produceLogs(bytePwd);
             return SuccessMsg.successMessage(String.format("User "+ bytePwd.getEmail()+" has been added!"));
         } else {
             return ErrorMsg.errorMessage("User "+ bytePwd.getEmail()+" already exists!");
@@ -63,6 +67,11 @@ public class BytePwdServiceImpl implements BytePwdService {
      */
     @Override
     public ArrayList<BytePwd> getEmailPwdList() {
+        BytePwd bytePwd=new BytePwd();
+        bytePwd.setAction(VIEWED_CREDENTIALS);
+        LogProducer.produceLogs(bytePwd);
+        LogConsumer.dataConsumer();
+
         return (ArrayList<BytePwd>) byteRep.findAll();
     }
 
@@ -78,6 +87,9 @@ public class BytePwdServiceImpl implements BytePwdService {
 
             if (byteRep.findByEmail(bytePwd.getEmail()).isPresent()) {
                 byteRep.deleteByEmail(bytePwd.getEmail());
+
+                bytePwd.setAction(DELETED_USER);
+                LogProducer.produceLogs(bytePwd);
                 return SuccessMsg.successMessage("User removed!");
             } else {
                 return ErrorMsg.errorMessage("Failed to remove user!");

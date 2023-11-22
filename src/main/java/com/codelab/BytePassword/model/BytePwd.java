@@ -23,5 +23,6 @@ public class BytePwd {
     private String message;
     private String logo;
     private String timestamp;
+    private String action;
 
 }

@@ -28,7 +28,7 @@ public class LogProducer {
 
         try {
 
-            Producer<String, String> producer = new KafkaProducer<>(props);
+            KafkaProducer<String, String> producer = new KafkaProducer<>(props);
             ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC, String.valueOf(message));
             producer.send(record, (metadata, exception) -> {
                 if (exception != null) {
