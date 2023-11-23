@@ -22,6 +22,73 @@ public class BytePwdController {
         this.pmUser=appUser;
     }
 
+
+
+    @PostMapping("/login-user")
+    public ResponseEntity<?>loginUser(@RequestBody JsonObject bodyRequest){
+        log.info("1Verified =================================>, " + bodyRequest);
+
+        try {
+            if (bodyRequest.toString().isEmpty()) {
+
+                return ResponseEntity.badRequest().body("No data Found!");
+
+            } else {
+                log.info("1V1_erified =================================>, " + bodyRequest);
+                return new ResponseEntity<>(pmUser.logIn(bodyRequest) , HttpStatus.OK);
+            }
+
+        } catch (Exception e) {
+
+            log.error("==>" + e.getLocalizedMessage());
+
+            return ResponseEntity.badRequest().body("Error occurred, unable to login user.");
+        }
+    }
+
+    @PostMapping("/login-out-user")
+    public ResponseEntity<?>logOutUser(@RequestBody JsonObject bodyRequest){
+
+
+        try {
+            if (bodyRequest.toString().isEmpty()) {
+
+                return ResponseEntity.badRequest().body("No data Found!");
+
+            } else {
+
+                return new ResponseEntity<>(pmUser.logOut(bodyRequest) , HttpStatus.OK);
+            }
+
+        } catch (Exception e) {
+
+            log.error("==>" + e.getLocalizedMessage());
+
+            return ResponseEntity.badRequest().body("Error occurred, unable to log-out user.");
+        }
+    }
+    @PostMapping("/register-user")
+    public ResponseEntity<?>registerUser(@RequestBody JsonObject bodyRequest){
+        log.info("addCredentials ---=>>"+bodyRequest.toString());
+
+        try {
+            if (bodyRequest.toString().isEmpty()) {
+
+                return ResponseEntity.badRequest().body("No data Found!");
+
+            } else {
+
+                return new ResponseEntity<>(pmUser.registerUser(bodyRequest) , HttpStatus.OK);
+            }
+
+        } catch (Exception e) {
+
+            log.error("==>" + e.getLocalizedMessage());
+
+            return ResponseEntity.badRequest().body("Error occurred, unable to log-out user.");
+        }
+    }
+
     @PostMapping("/addCredentials")
     public ResponseEntity<?>addCredentials(@RequestBody BytePwd bodyRequest){
         log.info("addCredentials ---=>>"+bodyRequest.toString());

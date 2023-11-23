@@ -46,7 +46,7 @@ public class PasswordEncryption {
             assert secretKey != null;
             SecretKeySpec key = new SecretKeySpec(secretKey.getBytes(), AES_ALGO);
             Cipher cipher = Cipher.getInstance(AES_ALGO);
-            cipher.init(Cipher.ENCRYPT_MODE,key);
+            cipher.init(Cipher.DECRYPT_MODE,key);
             byte[] decodedBytes = Base64.getDecoder().decode(encryptPwd);
             byte[] decryptedBts = cipher.doFinal(decodedBytes);
             log.info("Decrypted password========>{}", new String(decryptedBts));

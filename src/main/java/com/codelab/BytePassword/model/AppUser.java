@@ -18,5 +18,7 @@ public class AppUser {
     private String password;
     private String email;
     private String hint;
+    private String timestamp;
+    private String action;
 
 }
