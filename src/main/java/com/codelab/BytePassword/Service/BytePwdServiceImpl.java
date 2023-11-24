@@ -8,12 +8,14 @@ import com.codelab.BytePassword.Service.Kafka.LogConsumer;
 import com.codelab.BytePassword.Service.Kafka.LogProducer;
 import com.codelab.BytePassword.model.BytePwd;
 import com.google.gson.JsonObject;
+import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.codelab.BytePassword.Constant.Constants.*;
 
@@ -40,7 +42,7 @@ public class BytePwdServiceImpl implements BytePwdService {
         try {
 
 
-        String password = PasswordEncryption.encryptPwd(bytePwd.getPassword());
+        String password = PasswordEncryption.encryptDataPassword(bytePwd.getPassword());
 
         bytePwd.setPassword(password);
 
@@ -67,12 +69,28 @@ public class BytePwdServiceImpl implements BytePwdService {
      */
     @Override
     public ArrayList<BytePwd> getEmailPwdList() {
+
+
+
         BytePwd bytePwd=new BytePwd();
         bytePwd.setAction(VIEWED_CREDENTIALS);
         LogProducer.produceLogs(bytePwd);
         LogConsumer.dataConsumer();
 
         return (ArrayList<BytePwd>) byteRep.findAll();
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public List<Pair<String, String>> getEmailAndDecryptedPwdList() {
+        List<BytePwd> encryptedList = byteRep.findAll();
+        List<Pair<String, String>> decryptedList = new ArrayList<>();
+        for (BytePwd bytePwd : encryptedList) {
+          //  String decryptedPassword = PasswordEncryption.decryptDataPassword(,)
+        }
+return decryptedList;
     }
 
     /**

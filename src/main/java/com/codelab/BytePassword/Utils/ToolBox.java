@@ -23,13 +23,28 @@ public class ToolBox {
         return strRes.toString();
     }
 
+    /**
+     * Logs current time
+     * @return
+     */
     public static String stampTimeOfLogs(){
 
         LocalDateTime now = LocalDateTime.now();
 
         String timestamp = String.valueOf(now);
-        log.info("Timestamp:-=------------------------------------- " + timestamp);
+        log.info("Timestamp: " + timestamp);
 
         return timestamp;
     }
+
+    /**
+     * Check if both strings are equal
+     * @param dbPassword
+     * @param userPassword
+     * @return
+     */
+    public static boolean matches(String dbPassword,String userPassword){
+        return dbPassword.equals(userPassword);
+    }
+
 }

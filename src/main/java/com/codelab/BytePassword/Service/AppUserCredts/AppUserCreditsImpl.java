@@ -13,6 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Optional;
+
 import static com.codelab.BytePassword.Constant.Constants.*;
 
 @Slf4j
@@ -31,64 +34,66 @@ public class AppUserCreditsImpl implements UserServices {
      */
     @Override
     public JsonObject logOut(JsonObject res) {
+        String email= String.valueOf(res.get("email"));
+        Optional<AppUser> userApp = appUserRepo.findUserByEmail(email);
 
-        res.addProperty("logout", Boolean.TRUE);
+        if (userApp.isPresent()) {
 
-        BytePwd bytePwd= new BytePwd();
+            res.addProperty("logout", Boolean.TRUE);
+            res.addProperty("message","Successfully Logged In.");
 
-        bytePwd.setAction(LOGOUT);
-        bytePwd.setTimestamp(ToolBox.stampTimeOfLogs());
-        bytePwd.setEmail(String.valueOf(res.get("email")));
-        LogProducer.produceLogs(bytePwd);
+            BytePwd bytePwd = new BytePwd();
 
-        return res;
+            bytePwd.setAction(LOGOUT);
+            bytePwd.setTimestamp(ToolBox.stampTimeOfLogs());
+            bytePwd.setEmail(email);
+            LogProducer.produceLogs(bytePwd);
+
+            return res;
+        }
+        return ErrorMsg.errorMessage("Failed to logout...");
     }
 
     /**
+     * Signs user in the app
      * @param res
      * @return
      */
-    @Override
     public JsonObject logIn(JsonObject res) {
-
-        String email = String.valueOf(res.get("email"));
-        String password = String.valueOf(res.get("password"));
-
         try {
+            String email = String.valueOf(res.get("email"));
+            String password = String.valueOf(res.get("password"));
 
-            if ((email != null && password != null)) {
-                PasswordEncryption.encryptPwd(password);
+            if (email != null && password != null) {
+                Optional<AppUser> userApp = appUserRepo.findUserByEmail(email);
 
-                if (appUserRepo.findUserByEmail(email).isPresent()) {
+                if (userApp.isPresent()) {
+                    String encryptedPwdFromDB = userApp.get().getPassword(); // Assuming getPassword()
 
-                    String decryptedPwd = String.valueOf(appUserRepo
-                                    .findPasswordByEmail(password));
-                    log.info("Encrypted password================-------------================> " +decryptedPwd);
-
-
-                    if (decryptedPwd.equals(password)) {
-
-                        res.addProperty("verified", Boolean.TRUE);
+                    if (PasswordEncryption.validatePassword(password,encryptedPwdFromDB)) {
 
 
-                        BytePwd bytePwd= new BytePwd();
-
+                        BytePwd bytePwd = new BytePwd();
                         bytePwd.setAction(LOGIN);
                         bytePwd.setTimestamp(ToolBox.stampTimeOfLogs());
                         bytePwd.setEmail(email);
                         LogProducer.produceLogs(bytePwd);
 
-                        return res;
-                    }
-                    else {
-                        ErrorMsg.errorMessage("Failed to login with email+password provided.");
+                        JsonObject  response = new JsonObject();
+                        response.addProperty("login", Boolean.TRUE);
+                        response.addProperty("message","Successfully Logged In.");
+
+
+                        return response;
+                    } else {
+                        return ErrorMsg.errorMessage("Failed to log in with the provided email and password.");
                     }
                 }
             }
         } catch (Exception e) {
+            log.error("Failed to log in USER {},{}", res.get("email"), e.getLocalizedMessage());
             e.printStackTrace();
-            log.error("Failed to login USER {},{}", email, e.getLocalizedMessage());
-            return ErrorMsg.errorMessage("Failed to login user!");
+            return ErrorMsg.errorMessage("Failed to log in user!");
         }
 
         return null;
@@ -107,7 +112,8 @@ public class AppUserCreditsImpl implements UserServices {
 
         try {
 
-            String password = PasswordEncryption.encryptPwd(String.valueOf(res.get("password")));
+
+            String password = PasswordEncryption.encryptPassword(String.valueOf(res.get("password")));
             String hint = String.valueOf(res.get("hint"));
 
             AppUser appUser = new AppUser();
@@ -115,6 +121,7 @@ public class AppUserCreditsImpl implements UserServices {
             appUser.setEmail(email);
             appUser.setPassword(password);
             appUser.setHint(hint);
+
 
 
             if (appUserRepo.findUserByEmail(email).isEmpty()) {
@@ -128,7 +135,7 @@ public class AppUserCreditsImpl implements UserServices {
                 bytePwd.setEmail(email);
                 LogProducer.produceLogs(bytePwd);
 
-                return SuccessMsg.successMessage(String.format("User's with username {} created!", email));
+                return SuccessMsg.successMessage("User's with username: " +email+ " created!");
             } else {
 
                 return ErrorMsg.errorMessage("User already exists!");
@@ -140,4 +147,15 @@ public class AppUserCreditsImpl implements UserServices {
             return ErrorMsg.errorMessage("Failed to register user!");
         }
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public ArrayList<AppUser> getEmailPwdList() {
+        return (ArrayList<AppUser>) appUserRepo.findAll();
+    }
+
+
+
 }
