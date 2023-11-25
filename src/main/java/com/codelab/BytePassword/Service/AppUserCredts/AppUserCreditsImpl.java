@@ -34,13 +34,13 @@ public class AppUserCreditsImpl implements UserServices {
      */
     @Override
     public JsonObject logOut(JsonObject res) {
-        String email= String.valueOf(res.get("email"));
+        String email = String.valueOf(res.get("email"));
         Optional<AppUser> userApp = appUserRepo.findUserByEmail(email);
 
         if (userApp.isPresent()) {
 
             res.addProperty("logout", Boolean.TRUE);
-            res.addProperty("message","Successfully Logged In.");
+            res.addProperty("message", "Successfully Logged In.");
 
             BytePwd bytePwd = new BytePwd();
 
@@ -56,6 +56,7 @@ public class AppUserCreditsImpl implements UserServices {
 
     /**
      * Signs user in the app
+     *
      * @param res
      * @return
      */
@@ -70,7 +71,7 @@ public class AppUserCreditsImpl implements UserServices {
                 if (userApp.isPresent()) {
                     String encryptedPwdFromDB = userApp.get().getPassword(); // Assuming getPassword()
 
-                    if (PasswordEncryption.validatePassword(password,encryptedPwdFromDB)) {
+                    if (PasswordEncryption.validatePassword(password, encryptedPwdFromDB)) {
 
 
                         BytePwd bytePwd = new BytePwd();
@@ -79,9 +80,9 @@ public class AppUserCreditsImpl implements UserServices {
                         bytePwd.setEmail(email);
                         LogProducer.produceLogs(bytePwd);
 
-                        JsonObject  response = new JsonObject();
+                        JsonObject response = new JsonObject();
                         response.addProperty("login", Boolean.TRUE);
-                        response.addProperty("message","Successfully Logged In.");
+                        response.addProperty("message", "Successfully Logged In.");
 
 
                         return response;
@@ -123,19 +124,18 @@ public class AppUserCreditsImpl implements UserServices {
             appUser.setHint(hint);
 
 
-
             if (appUserRepo.findUserByEmail(email).isEmpty()) {
                 log.info("ENCRYPTED PASSWORD ----=>{}", appUser.getPassword());
 
                 appUserRepo.save(appUser);
 
-                BytePwd bytePwd= new BytePwd();
+                BytePwd bytePwd = new BytePwd();
                 bytePwd.setAction(REGISTER_USER);
                 bytePwd.setTimestamp(ToolBox.stampTimeOfLogs());
                 bytePwd.setEmail(email);
                 LogProducer.produceLogs(bytePwd);
 
-                return SuccessMsg.successMessage("User's with username: " +email+ " created!");
+                return SuccessMsg.successMessage("User's with username: " + email + " created!");
             } else {
 
                 return ErrorMsg.errorMessage("User already exists!");
@@ -155,7 +155,6 @@ public class AppUserCreditsImpl implements UserServices {
     public ArrayList<AppUser> getEmailPwdList() {
         return (ArrayList<AppUser>) appUserRepo.findAll();
     }
-
 
 
 }

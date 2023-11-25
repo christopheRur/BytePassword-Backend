@@ -32,7 +32,8 @@ public class BytePwdServiceImpl implements BytePwdService {
 
 
     /**
-     * Adds user
+     * Adds user in db
+     *
      * @param bytePwd
      * @return
      */
@@ -40,24 +41,22 @@ public class BytePwdServiceImpl implements BytePwdService {
     public JsonObject addUserInfo(BytePwd bytePwd) {
 
         try {
+            String password = PasswordEncryption.encryptDataPassword(bytePwd.getPassword());
+
+            bytePwd.setPassword(password);
 
 
-        String password = PasswordEncryption.encryptDataPassword(bytePwd.getPassword());
+            if (byteRep.findByEmail(bytePwd.getEmail()).isEmpty()) {
 
-        bytePwd.setPassword(password);
+                byteRep.save(bytePwd);
+                bytePwd.setAction(ADD_COMBO_PWD_EMAIL);
+                LogProducer.produceLogs(bytePwd);
+                return SuccessMsg.successMessage(String.format("User " + bytePwd.getEmail() + " has been added!"));
+            } else {
+                return ErrorMsg.errorMessage("User " + bytePwd.getEmail() + " already exists!");
+            }
 
-
-        if (byteRep.findByEmail(bytePwd.getEmail()).isEmpty()) {
-
-            byteRep.save(bytePwd);
-            bytePwd.setAction(ADD_COMBO_PWD_EMAIL);
-            LogProducer.produceLogs(bytePwd);
-            return SuccessMsg.successMessage(String.format("User "+ bytePwd.getEmail()+" has been added!"));
-        } else {
-            return ErrorMsg.errorMessage("User "+ bytePwd.getEmail()+" already exists!");
-        }
-
-    } catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             log.error("Failed to add  USER details {},{}", bytePwd.getEmail(), e.getLocalizedMessage());
             return ErrorMsg.errorMessage("Failed to failed to add user info!");
@@ -71,8 +70,7 @@ public class BytePwdServiceImpl implements BytePwdService {
     public ArrayList<BytePwd> getEmailPwdList() {
 
 
-
-        BytePwd bytePwd=new BytePwd();
+        BytePwd bytePwd = new BytePwd();
         bytePwd.setAction(VIEWED_CREDENTIALS);
         LogProducer.produceLogs(bytePwd);
         LogConsumer.dataConsumer();
@@ -88,9 +86,9 @@ public class BytePwdServiceImpl implements BytePwdService {
         List<BytePwd> encryptedList = byteRep.findAll();
         List<Pair<String, String>> decryptedList = new ArrayList<>();
         for (BytePwd bytePwd : encryptedList) {
-          //  String decryptedPassword = PasswordEncryption.decryptDataPassword(,)
+            //  String decryptedPassword = PasswordEncryption.decryptDataPassword(,)
         }
-return decryptedList;
+        return decryptedList;
     }
 
     /**
