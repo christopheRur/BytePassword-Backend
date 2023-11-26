@@ -86,21 +86,19 @@ public class BytePwdServiceImpl implements BytePwdService {
      * @return
      */
     @Override
-    public JsonObject getEmailAndDecryptedPwdList() {
+    public JsonArray getEmailAndDecryptedPwdList() {
 
         JsonObject json = new JsonObject();
         JsonArray jsonArray = new JsonArray();
 
         List<BytePwd> encryptedList = byteRep.findAll();
-        List<Pair<String, String>> decryptedList = new ArrayList<>();
+
         for (BytePwd bytePwd : encryptedList) {
 
             json.addProperty("email", bytePwd.getEmail());
             json.addProperty("encryptedPwd", bytePwd.getPassword());
             json.addProperty("original", bytePwd.getOriginal());
-            json.addProperty("hint", bytePwd.getHint());
-            json.addProperty("logo", bytePwd.getLogo());
-            json.addProperty("message", bytePwd.getMessage());
+
 
             jsonArray.add(json);
 
@@ -108,7 +106,7 @@ public class BytePwdServiceImpl implements BytePwdService {
 
         }
         log.info("Encrypted=============9889989889===================>{}",jsonArray);
-        return decryptedList;
+        return jsonArray;
     }
 
     /**
