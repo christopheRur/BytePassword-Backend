@@ -7,6 +7,7 @@ import com.codelab.BytePassword.Service.Encryption.PasswordEncryption;
 import com.codelab.BytePassword.Service.Kafka.LogConsumer;
 import com.codelab.BytePassword.Service.Kafka.LogProducer;
 import com.codelab.BytePassword.model.BytePwd;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
@@ -41,9 +42,11 @@ public class BytePwdServiceImpl implements BytePwdService {
     public JsonObject addUserInfo(BytePwd bytePwd) {
 
         try {
+            bytePwd.setOriginal(bytePwd.getPassword());
             String password = PasswordEncryption.encryptDataPassword(bytePwd.getPassword());
 
             bytePwd.setPassword(password);
+
 
 
             if (byteRep.findByEmail(bytePwd.getEmail()).isEmpty()) {
@@ -74,6 +77,7 @@ public class BytePwdServiceImpl implements BytePwdService {
         bytePwd.setAction(VIEWED_CREDENTIALS);
         LogProducer.produceLogs(bytePwd);
         LogConsumer.dataConsumer();
+        getEmailAndDecryptedPwdList();
 
         return (ArrayList<BytePwd>) byteRep.findAll();
     }
@@ -83,11 +87,30 @@ public class BytePwdServiceImpl implements BytePwdService {
      */
     @Override
     public List<Pair<String, String>> getEmailAndDecryptedPwdList() {
+
+        JsonObject json = new JsonObject();
+        JsonArray jsonArray = new JsonArray();
+
+  log.info("getEmailAndDecryptedPwdList =================================================>>>>>");
         List<BytePwd> encryptedList = byteRep.findAll();
         List<Pair<String, String>> decryptedList = new ArrayList<>();
         for (BytePwd bytePwd : encryptedList) {
-            //  String decryptedPassword = PasswordEncryption.decryptDataPassword(,)
+
+            json.addProperty("email", bytePwd.getEmail());
+            json.addProperty("encryptedPwd", bytePwd.getPassword());
+            json.addProperty("original", bytePwd.getOriginal());
+            json.addProperty("hint", bytePwd.getHint());
+            json.addProperty("logo", bytePwd.getLogo());
+            json.addProperty("message", bytePwd.getMessage());
+
+            jsonArray.add(json);
+
+          //  String decryptedPassword = String.valueOf(PasswordEncryption.verifyDecryptedDataPassword(bytePwd.getOriginal(),bytePwd.getPassword()));
+            Pair<String, String> pwdEmailPair=new Pair<>(bytePwd.getEmail(),bytePwd.getOriginal());
+            decryptedList.add(pwdEmailPair);
+
         }
+        log.info("Encrypted=============9889989889===================>{}",jsonArray);
         return decryptedList;
     }
 
