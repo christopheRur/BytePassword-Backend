@@ -47,8 +47,6 @@ public class BytePwdServiceImpl implements BytePwdService {
 
             bytePwd.setPassword(password);
 
-
-
             if (byteRep.findByEmail(bytePwd.getEmail()).isEmpty()) {
 
                 byteRep.save(bytePwd);
@@ -86,7 +84,7 @@ public class BytePwdServiceImpl implements BytePwdService {
      * @return
      */
     @Override
-    public JsonArray getEmailAndDecryptedPwdList() {
+    public JsonArray getEmailPwdAndEncryptedList() {
 
         JsonObject json = new JsonObject();
         JsonArray jsonArray = new JsonArray();
@@ -98,14 +96,9 @@ public class BytePwdServiceImpl implements BytePwdService {
             json.addProperty("email", bytePwd.getEmail());
             json.addProperty("encryptedPwd", bytePwd.getPassword());
             json.addProperty("original", bytePwd.getOriginal());
-
-
             jsonArray.add(json);
-
-
-
         }
-        log.info("Encrypted=============9889989889===================>{}",jsonArray);
+
         return jsonArray;
     }
 
@@ -117,7 +110,6 @@ public class BytePwdServiceImpl implements BytePwdService {
     public JsonObject deleteEmailPwdCombo(BytePwd bytePwd) {
 
         try {
-
 
             if (byteRep.findByEmail(bytePwd.getEmail()).isPresent()) {
                 byteRep.deleteByEmail(bytePwd.getEmail());

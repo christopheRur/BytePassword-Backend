@@ -25,7 +25,6 @@ public class BytePwdController {
 
     @PostMapping("/login-user")
     public ResponseEntity<?> loginUser(@RequestBody JsonObject bodyRequest) {
-        log.info("1Verified =================================>, " + bodyRequest);
 
         try {
             if (bodyRequest.toString().isEmpty()) {
@@ -33,7 +32,7 @@ public class BytePwdController {
                 return ResponseEntity.badRequest().body("No data Found!");
 
             } else {
-                log.info("1V1_erified =================================>, " + bodyRequest);
+
                 return new ResponseEntity<>(pmUser.logIn(bodyRequest), HttpStatus.OK);
             }
 
@@ -69,7 +68,7 @@ public class BytePwdController {
 
     @PostMapping("/register-user")
     public ResponseEntity<?> registerUser(@RequestBody JsonObject bodyRequest) {
-        log.info("addCredentials ---=>>" + bodyRequest.toString());
+        log.info("addCredentials --->" + bodyRequest.toString());
 
         try {
             if (bodyRequest.toString().isEmpty()) {
@@ -123,6 +122,28 @@ public class BytePwdController {
 
 
                 return new ResponseEntity<>(pmService.getEmailPwdList(), HttpStatus.OK);
+            }
+
+        } catch (Exception e) {
+
+            log.info("==>" + e.getLocalizedMessage());
+
+            return ResponseEntity.badRequest().body("Error occurred, unable to FETCH data.");
+        }
+    }
+
+
+    @GetMapping("/get-info")
+    public ResponseEntity<?> getInfo() {
+        try {
+            if (pmService == null) {
+
+                return ResponseEntity.badRequest().body("No DATA Found!");
+
+            } else {
+
+
+                return new ResponseEntity<>(pmService.getEmailPwdAndEncryptedList(), HttpStatus.OK);
             }
 
         } catch (Exception e) {
