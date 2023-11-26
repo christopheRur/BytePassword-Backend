@@ -17,15 +17,14 @@ public class BytePwdController {
     private AppUserCreditsImpl pmUser;
 
 
-    public BytePwdController(BytePwdServiceImpl bpService,AppUserCreditsImpl appUser){
-        this.pmService=bpService;
-        this.pmUser=appUser;
+    public BytePwdController(BytePwdServiceImpl bpService, AppUserCreditsImpl appUser) {
+        this.pmService = bpService;
+        this.pmUser = appUser;
     }
 
 
-
     @PostMapping("/login-user")
-    public ResponseEntity<?>loginUser(@RequestBody JsonObject bodyRequest){
+    public ResponseEntity<?> loginUser(@RequestBody JsonObject bodyRequest) {
         log.info("1Verified =================================>, " + bodyRequest);
 
         try {
@@ -35,7 +34,7 @@ public class BytePwdController {
 
             } else {
                 log.info("1V1_erified =================================>, " + bodyRequest);
-                return new ResponseEntity<>(pmUser.logIn(bodyRequest) , HttpStatus.OK);
+                return new ResponseEntity<>(pmUser.logIn(bodyRequest), HttpStatus.OK);
             }
 
         } catch (Exception e) {
@@ -47,7 +46,7 @@ public class BytePwdController {
     }
 
     @PostMapping("/login-out-user")
-    public ResponseEntity<?>logOutUser(@RequestBody JsonObject bodyRequest){
+    public ResponseEntity<?> logOutUser(@RequestBody JsonObject bodyRequest) {
 
 
         try {
@@ -57,7 +56,7 @@ public class BytePwdController {
 
             } else {
 
-                return new ResponseEntity<>(pmUser.logOut(bodyRequest) , HttpStatus.OK);
+                return new ResponseEntity<>(pmUser.logOut(bodyRequest), HttpStatus.OK);
             }
 
         } catch (Exception e) {
@@ -67,9 +66,10 @@ public class BytePwdController {
             return ResponseEntity.badRequest().body("Error occurred, unable to log-out user.");
         }
     }
+
     @PostMapping("/register-user")
-    public ResponseEntity<?>registerUser(@RequestBody JsonObject bodyRequest){
-        log.info("addCredentials ---=>>"+bodyRequest.toString());
+    public ResponseEntity<?> registerUser(@RequestBody JsonObject bodyRequest) {
+        log.info("addCredentials ---=>>" + bodyRequest.toString());
 
         try {
             if (bodyRequest.toString().isEmpty()) {
@@ -78,7 +78,7 @@ public class BytePwdController {
 
             } else {
 
-                return new ResponseEntity<>(pmUser.registerUser(bodyRequest) , HttpStatus.OK);
+                return new ResponseEntity<>(pmUser.registerUser(bodyRequest), HttpStatus.OK);
             }
 
         } catch (Exception e) {
@@ -90,8 +90,8 @@ public class BytePwdController {
     }
 
     @PostMapping("/addCredentials")
-    public ResponseEntity<?>addCredentials(@RequestBody BytePwd bodyRequest){
-        log.info("addCredentials ---=>>"+bodyRequest.toString());
+    public ResponseEntity<?> addCredentials(@RequestBody BytePwd bodyRequest) {
+        log.info("addCredentials ---=>>" + bodyRequest.toString());
 
         try {
             if (bodyRequest.toString().isEmpty()) {
@@ -100,7 +100,7 @@ public class BytePwdController {
 
             } else {
 
-                return new ResponseEntity<>(pmService.addUserInfo(bodyRequest) , HttpStatus.OK);
+                return new ResponseEntity<>(pmService.addUserInfo(bodyRequest), HttpStatus.OK);
             }
 
         } catch (Exception e) {

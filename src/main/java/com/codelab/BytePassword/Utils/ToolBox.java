@@ -2,13 +2,13 @@ package com.codelab.BytePassword.Utils;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Slf4j
 public class ToolBox {
     /**
      * Helper method to convert bytes to hexadecimal string
+     *
      * @param bytes the bytes to convert
      * @return
      */
@@ -16,8 +16,8 @@ public class ToolBox {
 
         StringBuilder strRes = new StringBuilder();
 
-        for(byte bit: bytes){
-            strRes.append(String.format("%02X",bit));
+        for (byte bit : bytes) {
+            strRes.append(String.format("%02X", bit));
         }
 
         return strRes.toString();
@@ -25,9 +25,10 @@ public class ToolBox {
 
     /**
      * Logs current time
+     *
      * @return
      */
-    public static String stampTimeOfLogs(){
+    public static String stampTimeOfLogs() {
 
         LocalDateTime now = LocalDateTime.now();
 
@@ -39,11 +40,12 @@ public class ToolBox {
 
     /**
      * Check if both strings are equal
+     *
      * @param dbPassword
      * @param userPassword
      * @return
      */
-    public static boolean matches(String dbPassword,String userPassword){
+    public static boolean matches(String dbPassword, String userPassword) {
         return dbPassword.equals(userPassword);
     }
 

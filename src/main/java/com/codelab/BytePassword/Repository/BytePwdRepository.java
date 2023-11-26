@@ -7,13 +7,13 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface BytePwdRepository extends JpaRepository<BytePwd,Long> {
+public interface BytePwdRepository extends JpaRepository<BytePwd, Long> {
 
-Optional<BytePwd> findByEmail(String email);
-Optional<BytePwd> findByHint(String hint);
-Optional<BytePwd> deleteByEmail(String email);
+    Optional<BytePwd> findByEmail(String email);
 
+    Optional<BytePwd> findByHint(String hint);
 
+    Optional<BytePwd> deleteByEmail(String email);
 
 
 }

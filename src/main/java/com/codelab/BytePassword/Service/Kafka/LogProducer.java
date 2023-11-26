@@ -6,7 +6,6 @@ import com.codelab.BytePassword.Utils.ToolBox;
 import com.codelab.BytePassword.model.BytePwd;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.util.Properties;
@@ -38,7 +37,7 @@ public class LogProducer {
                     log.error("--==>" + exception.getMessage());
                 } else {
 
-                    log.info("Log message sent successfully to topic: {}" , metadata.topic());
+                    log.info("Log message sent successfully to topic: {}", metadata.topic());
 
                     SuccessMsg.successMessage(String.format("Log message sent successfully to topic: " + metadata.topic()));
                 }

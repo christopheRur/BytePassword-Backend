@@ -9,31 +9,31 @@ import java.security.NoSuchAlgorithmException;
 import static com.codelab.BytePassword.Constant.Constants.AES_ALGO;
 
 public class SecretKeyGenerator {
-   public static SecretKey generateSecretKey(){
+    public static SecretKey generateSecretKey() {
 
-       try {
+        try {
 
-           KeyGenerator keyGenerator = KeyGenerator.getInstance(AES_ALGO);
+            KeyGenerator keyGenerator = KeyGenerator.getInstance(AES_ALGO);
 
-           keyGenerator.init(128);
+            keyGenerator.init(128);
 
-           return keyGenerator.generateKey();
+            return keyGenerator.generateKey();
 
-       } catch (NoSuchAlgorithmException e) {
-           e.printStackTrace();
-           throw new RuntimeException(e);
-       }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
 
-   }
+    }
 
-   public static String  getEncodedSecretKey(){
+    public static String getEncodedSecretKey() {
 
-       SecretKey secretKey = generateSecretKey();
-       if (secretKey != null){
-           byte[] encodedKey=secretKey.getEncoded();
+        SecretKey secretKey = generateSecretKey();
+        if (secretKey != null) {
+            byte[] encodedKey = secretKey.getEncoded();
 
-           return ToolBox.byteToHex(encodedKey);
-       }
-       return null;
-   }
+            return ToolBox.byteToHex(encodedKey);
+        }
+        return null;
+    }
 }
