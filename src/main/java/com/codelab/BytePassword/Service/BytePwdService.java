@@ -16,7 +16,7 @@ public interface BytePwdService {
 
     public ArrayList<BytePwd> getEmailPwdList();
 
-    public List<Pair<String, String>> getEmailAndDecryptedPwdList();
+    public JsonObject getEmailAndDecryptedPwdList();
 
     @Transactional
     JsonObject deleteEmailPwdCombo(BytePwd bytePwd);

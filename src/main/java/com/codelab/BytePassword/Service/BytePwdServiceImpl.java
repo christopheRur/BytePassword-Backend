@@ -77,7 +77,7 @@ public class BytePwdServiceImpl implements BytePwdService {
         bytePwd.setAction(VIEWED_CREDENTIALS);
         LogProducer.produceLogs(bytePwd);
         LogConsumer.dataConsumer();
-        getEmailAndDecryptedPwdList();
+
 
         return (ArrayList<BytePwd>) byteRep.findAll();
     }
@@ -86,12 +86,11 @@ public class BytePwdServiceImpl implements BytePwdService {
      * @return
      */
     @Override
-    public List<Pair<String, String>> getEmailAndDecryptedPwdList() {
+    public JsonObject getEmailAndDecryptedPwdList() {
 
         JsonObject json = new JsonObject();
         JsonArray jsonArray = new JsonArray();
 
-  log.info("getEmailAndDecryptedPwdList =================================================>>>>>");
         List<BytePwd> encryptedList = byteRep.findAll();
         List<Pair<String, String>> decryptedList = new ArrayList<>();
         for (BytePwd bytePwd : encryptedList) {
@@ -105,9 +104,7 @@ public class BytePwdServiceImpl implements BytePwdService {
 
             jsonArray.add(json);
 
-          //  String decryptedPassword = String.valueOf(PasswordEncryption.verifyDecryptedDataPassword(bytePwd.getOriginal(),bytePwd.getPassword()));
-            Pair<String, String> pwdEmailPair=new Pair<>(bytePwd.getEmail(),bytePwd.getOriginal());
-            decryptedList.add(pwdEmailPair);
+
 
         }
         log.info("Encrypted=============9889989889===================>{}",jsonArray);
