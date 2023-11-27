@@ -70,7 +70,6 @@ public class BytePwdServiceImpl implements BytePwdService {
     @Override
     public ArrayList<BytePwd> getEmailPwdList() {
 
-
         BytePwd bytePwd = new BytePwd();
         bytePwd.setAction(VIEWED_CREDENTIALS);
         LogProducer.produceLogs(bytePwd);
