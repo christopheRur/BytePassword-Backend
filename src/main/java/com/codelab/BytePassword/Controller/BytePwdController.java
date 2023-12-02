@@ -44,7 +44,7 @@ public class BytePwdController {
         }
     }
 
-    @PostMapping("/login-out-user")
+    @PostMapping("/log-out-user")
     public ResponseEntity<?> logOutUser(@RequestBody JsonObject bodyRequest) {
 
 
