@@ -40,7 +40,7 @@ public class AppUserCreditsImpl implements UserServices {
         if (userApp.isPresent()) {
 
             res.addProperty("logout", Boolean.TRUE);
-            res.addProperty("message", "Successfully Logged In.");
+            res.addProperty("message", "Successfully Logged Out.");
 
             BytePwd bytePwd = new BytePwd();
 
@@ -49,9 +49,9 @@ public class AppUserCreditsImpl implements UserServices {
             bytePwd.setEmail(email);
             LogProducer.produceLogs(bytePwd);
 
-            return res;
+            return ToolBox.authResponse("Successfully Logged Out.",Boolean.TRUE);
         }
-        return ErrorMsg.errorMessage("Failed to logout...");
+        return  ToolBox.authResponse("Failed to logout.",Boolean.FALSE);
     }
 
     /**
@@ -86,23 +86,23 @@ public class AppUserCreditsImpl implements UserServices {
                         LogProducer.produceLogs(bytePwd);
 
 
-                        return ToolBox.loginResponse("Successfully Logged In.", Boolean.TRUE);
+                        return ToolBox.authResponse("Successfully Logged In.", Boolean.TRUE);
 
 
                     } else {
 
 
-                        return ToolBox.loginResponse("Unable to Login", Boolean.FALSE);
+                        return ToolBox.authResponse("Unable to Login", Boolean.FALSE);
                     }
                 } else {
 
-                    return ToolBox.loginResponse("Invalid Login credentials", Boolean.FALSE);
+                    return ToolBox.authResponse("Invalid Login credentials", Boolean.FALSE);
                 }
 
 
             } else {
 
-                return ToolBox.loginResponse("Unable to Login, make sure you enter your email and password.", Boolean.FALSE);
+                return ToolBox.authResponse("Unable to Login, make sure you enter your email and password.", Boolean.FALSE);
 
             }
         } catch (Exception e) {

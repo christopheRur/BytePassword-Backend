@@ -42,18 +42,20 @@ public class ToolBox {
     /**
      *  Return login response.
      * @param message String
-     * @param login Boolean
+     * @param authUser Boolean
      * @return
      */
-    public static JsonObject loginResponse(String message, boolean login){
+    public static JsonObject authResponse(String message,boolean authUser){
 
         JsonObject response = new JsonObject();
-        response.addProperty("login", login);
+        response.addProperty("login", authUser);
         response.addProperty("message", message);
+        response.addProperty("logout",authUser);
 
         return response;
 
     }
+
 
     /**
      * Check if both strings are equal
