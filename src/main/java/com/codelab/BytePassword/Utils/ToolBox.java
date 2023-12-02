@@ -1,5 +1,6 @@
 package com.codelab.BytePassword.Utils;
 
+import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
@@ -36,6 +37,22 @@ public class ToolBox {
         log.info("Timestamp: " + timestamp);
 
         return timestamp;
+    }
+
+    /**
+     *  Return login response.
+     * @param message String
+     * @param login Boolean
+     * @return
+     */
+    public static JsonObject loginResponse(String message, boolean login){
+
+        JsonObject response = new JsonObject();
+        response.addProperty("login", login);
+        response.addProperty("message", message);
+
+        return response;
+
     }
 
     /**

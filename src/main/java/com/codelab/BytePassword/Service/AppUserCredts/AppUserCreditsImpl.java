@@ -61,14 +61,19 @@ public class AppUserCreditsImpl implements UserServices {
      * @return
      */
     public JsonObject logIn(JsonObject res) {
+
         try {
             String email = String.valueOf(res.get("email"));
             String password = String.valueOf(res.get("password"));
 
+
             if (email != null && password != null) {
+
                 Optional<AppUser> userApp = appUserRepo.findUserByEmail(email);
 
+
                 if (userApp.isPresent()) {
+
                     String encryptedPwdFromDB = userApp.get().getPassword(); // Assuming getPassword()
 
                     if (PasswordEncryption.validatePassword(password, encryptedPwdFromDB)) {
@@ -80,16 +85,25 @@ public class AppUserCreditsImpl implements UserServices {
                         bytePwd.setEmail(email);
                         LogProducer.produceLogs(bytePwd);
 
-                        JsonObject response = new JsonObject();
-                        response.addProperty("login", Boolean.TRUE);
-                        response.addProperty("message", "Successfully Logged In.");
+
+                        return ToolBox.loginResponse("Successfully Logged In.", Boolean.TRUE);
 
 
-                        return response;
                     } else {
-                        return ErrorMsg.errorMessage("Failed to log in with the provided email and password.");
+
+
+                        return ToolBox.loginResponse("Unable to Login", Boolean.FALSE);
                     }
+                } else {
+
+                    return ToolBox.loginResponse("Invalid Login credentials", Boolean.FALSE);
                 }
+
+
+            } else {
+
+                return ToolBox.loginResponse("Unable to Login, make sure you enter your email and password.", Boolean.FALSE);
+
             }
         } catch (Exception e) {
             log.error("Failed to log in USER {},{}", res.get("email"), e.getLocalizedMessage());
@@ -97,7 +111,7 @@ public class AppUserCreditsImpl implements UserServices {
             return ErrorMsg.errorMessage("Failed to log in user!");
         }
 
-        return null;
+
     }
 
     /**
