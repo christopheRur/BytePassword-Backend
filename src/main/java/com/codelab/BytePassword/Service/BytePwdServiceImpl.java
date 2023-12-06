@@ -95,6 +95,7 @@ public class BytePwdServiceImpl implements BytePwdService {
             json.addProperty("email", bytePwd.getEmail());
             json.addProperty("encryptedPwd", bytePwd.getPassword());
             json.addProperty("original", bytePwd.getOriginal());
+            json.addProperty("id", bytePwd.getId());
             jsonArray.add(json);
         }
 

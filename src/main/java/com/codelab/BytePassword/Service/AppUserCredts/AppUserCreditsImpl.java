@@ -49,9 +49,9 @@ public class AppUserCreditsImpl implements UserServices {
             bytePwd.setEmail(email);
             LogProducer.produceLogs(bytePwd);
 
-            return ToolBox.authResponse("Successfully Logged Out.",Boolean.TRUE);
+            return ToolBox.authResponse("Successfully Logged Out.", Boolean.TRUE);
         }
-        return  ToolBox.authResponse("Failed to logout.",Boolean.FALSE);
+        return ToolBox.authResponse("Failed to logout.", Boolean.FALSE);
     }
 
     /**
