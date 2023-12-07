@@ -9,7 +9,6 @@ import com.codelab.BytePassword.Service.Kafka.LogProducer;
 import com.codelab.BytePassword.model.BytePwd;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,6 +64,7 @@ public class BytePwdServiceImpl implements BytePwdService {
     }
 
     /**
+     * Retrieve email and password and other attributes
      * @return
      */
     @Override
