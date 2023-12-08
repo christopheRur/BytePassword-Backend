@@ -155,7 +155,7 @@ public class BytePwdController {
     }
 
     @DeleteMapping("/deleteCredentials")
-    public ResponseEntity<?> deleteCredits(@RequestBody BytePwd bodyRequest) {
+    public ResponseEntity<?> deleteCredits(@RequestBody JsonObject bodyRequest) {
         try {
             if (pmService == null) {
 

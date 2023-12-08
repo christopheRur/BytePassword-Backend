@@ -107,12 +107,13 @@ public class BytePwdServiceImpl implements BytePwdService {
      */
     @Transactional
     @Override
-    public JsonObject deleteEmailPwdCombo(BytePwd bytePwd) {
-
+    public JsonObject deleteEmailPwdCombo(JsonObject res) {
+            BytePwd bytePwd=new BytePwd();
         try {
+            String email= String.valueOf(res.get("email"));
 
-            if (byteRep.findByEmail(bytePwd.getEmail()).isPresent()) {
-                byteRep.deleteByEmail(bytePwd.getEmail());
+            if (byteRep.findByEmail(email).isPresent()) {
+                byteRep.deleteByEmail(email);
 
                 bytePwd.setAction(DELETED_USER);
                 LogProducer.produceLogs(bytePwd);
