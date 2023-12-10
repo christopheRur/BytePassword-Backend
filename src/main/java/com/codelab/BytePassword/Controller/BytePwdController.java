@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
+@CrossOrigin
 @RestController
 public class BytePwdController {
 
@@ -154,6 +155,7 @@ public class BytePwdController {
         }
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("/deleteCredentials")
     public ResponseEntity<?> deleteCredits(@RequestBody JsonObject bodyRequest) {
         try {

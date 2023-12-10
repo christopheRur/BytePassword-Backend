@@ -18,5 +18,5 @@ public interface BytePwdService {
     public JsonArray getEmailPwdAndEncryptedList();
 
     @Transactional
-    JsonObject deleteEmailPwdCombo(JsonObject bytePwd);
+    JsonObject deleteEmailPwdCombo(String email);
 }

@@ -107,10 +107,10 @@ public class BytePwdServiceImpl implements BytePwdService {
      */
     @Transactional
     @Override
-    public JsonObject deleteEmailPwdCombo(JsonObject res) {
+    public JsonObject deleteEmailPwdCombo(String email) {
             BytePwd bytePwd=new BytePwd();
         try {
-            String email= String.valueOf(res.get("email"));
+
 
             if (byteRep.findByEmail(email).isPresent()) {
                 byteRep.deleteByEmail(email);
