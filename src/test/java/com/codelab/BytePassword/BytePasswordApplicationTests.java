@@ -62,7 +62,7 @@ class BytePasswordApplicationTests {
         jsonObject.addProperty("email", "test@example.com");
 
         Mockito.when(service.deleteEmailPwdCombo(bytePwd.getEmail())).thenReturn(jsonObject);
-        ResponseEntity<?> response = controller.deleteCredits(jsonObject);
+        ResponseEntity<?> response = controller.deleteCredits(bytePwd.getEmail());
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
     }

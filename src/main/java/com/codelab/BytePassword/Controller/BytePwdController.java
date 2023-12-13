@@ -157,7 +157,7 @@ public class BytePwdController {
 
     @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("/deleteCredentials")
-    public ResponseEntity<?> deleteCredits(@RequestBody JsonObject bodyRequest) {
+    public ResponseEntity<?> deleteCredits(@PathVariable String email) {
         try {
             if (pmService == null) {
 
@@ -166,7 +166,7 @@ public class BytePwdController {
             } else {
 
 
-                return new ResponseEntity<>(pmService.deleteEmailPwdCombo(bodyRequest), HttpStatus.OK);
+                return new ResponseEntity<>(pmService.deleteEmailPwdCombo(email), HttpStatus.OK);
             }
 
         } catch (Exception e) {
