@@ -41,7 +41,7 @@ public class BytePwdController {
 
             log.error("==>" + e.getLocalizedMessage());
 
-            return ResponseEntity.badRequest().body("Error occurred, unable to login user.");
+            return ResponseEntity.badRequest().body("Error occurred, unable to login user..");
         }
     }
 
