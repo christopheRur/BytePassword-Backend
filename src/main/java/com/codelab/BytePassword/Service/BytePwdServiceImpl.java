@@ -130,4 +130,37 @@ public class BytePwdServiceImpl implements BytePwdService {
 
     }
 
+    /**
+     * @param json JsonObject
+     * @return
+     */
+    @Override
+    public JsonObject checkId(JsonObject json) {
+        JsonObject result = new JsonObject();
+
+        try {
+            log.info("Checking ======>+  "+String.valueOf(json.get("email"))+" ---"+byteRep.findByEmail(String.valueOf(json.get("email"))).isPresent());
+
+            if(byteRep.findIdByEmail(String.valueOf(json.get("email"))).isPresent()){
+                
+
+                result.addProperty("message","drop");
+
+            }
+            else {
+
+                result.addProperty("message","keep");
+
+            }
+            return result;
+
+
+        } catch (Exception e) {
+        e.printStackTrace();
+        log.error("No id found! {}", e.getLocalizedMessage());
+        return ErrorMsg.errorMessage(" id not found!");
+    }
+
+    }
+
 }

@@ -19,4 +19,5 @@ public interface BytePwdService {
 
     @Transactional
     JsonObject deleteEmailPwdCombo(String email);
+    public JsonObject checkId(JsonObject json);
 }

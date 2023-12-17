@@ -155,28 +155,49 @@ public class BytePwdController {
         }
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
-    @DeleteMapping("/deleteCredentials")
-    public ResponseEntity<?> deleteCredits(@PathVariable String email) {
+
+    @DeleteMapping("/deleteCredentials/{email}")
+    public ResponseEntity<?> deleteCredentials(@PathVariable String email) {
         try {
             if (pmService == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Service Unavailable. Please try again later.");
+            }
 
-                return ResponseEntity.badRequest().body("No DATA Found!");
+            JsonObject result = pmService.deleteEmailPwdCombo(email);
+            if (result != null) {
+                log.info("Service deleted ==> " + result);
+                return ResponseEntity.ok(result);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+
+        } catch (Exception e) {
+            log.error("Error occurred while deleting credentials: ", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Error occurred, unable to delete credentials.");
+        }
+    }
+    @PostMapping("/verify_id")
+    public ResponseEntity<?> verifyId(@RequestBody JsonObject bodyRequest) {
+
+        try {
+            if (bodyRequest.toString().isEmpty()) {
+
+                return ResponseEntity.badRequest().body("No data Found!");
 
             } else {
 
-
-                return new ResponseEntity<>(pmService.deleteEmailPwdCombo(email), HttpStatus.OK);
+                return new ResponseEntity<>(pmService.checkId(bodyRequest), HttpStatus.OK);
             }
 
         } catch (Exception e) {
 
-            log.info("==>" + e.getLocalizedMessage());
+            log.error("==>" + e.getLocalizedMessage());
 
-            return ResponseEntity.badRequest().body("Error occurred, unable to DELETE data.");
+            return ResponseEntity.badRequest().body("Error occurred, unable to login user..");
         }
     }
-
 }
 
 
