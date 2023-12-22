@@ -50,7 +50,7 @@ public class BytePwdServiceImpl implements BytePwdService {
 
                 byteRep.save(bytePwd);
                 bytePwd.setAction(ADD_COMBO_PWD_EMAIL);
-                LogProducer.produceLogs(bytePwd);
+              //  LogProducer.produceLogs(bytePwd);
                 return SuccessMsg.successMessage(String.format("User " + bytePwd.getEmail() + " has been added!"));
             } else {
                 return ErrorMsg.errorMessage("User " + bytePwd.getEmail() + " already exists!");
@@ -72,8 +72,8 @@ public class BytePwdServiceImpl implements BytePwdService {
 
         BytePwd bytePwd = new BytePwd();
         bytePwd.setAction(VIEWED_CREDENTIALS);
-        LogProducer.produceLogs(bytePwd);
-        LogConsumer.dataConsumer();
+        //LogProducer.produceLogs(bytePwd);
+        //LogConsumer.dataConsumer();
 
 
         return (ArrayList<BytePwd>) byteRep.findAll();
@@ -116,7 +116,7 @@ public class BytePwdServiceImpl implements BytePwdService {
                 byteRep.deleteByEmail(email);
 
                 bytePwd.setAction(DELETED_USER);
-                LogProducer.produceLogs(bytePwd);
+               // LogProducer.produceLogs(bytePwd);
                 return SuccessMsg.successMessage("User removed!");
             } else {
                 return ErrorMsg.errorMessage("Failed to remove user!");
@@ -139,9 +139,10 @@ public class BytePwdServiceImpl implements BytePwdService {
         JsonObject result = new JsonObject();
 
         try {
-            log.info("Checking ======>+  "+String.valueOf(json.get("email"))+" ---"+byteRep.findByEmail(String.valueOf(json.get("email"))).isPresent());
 
-            if(byteRep.findIdByEmail(String.valueOf(json.get("email"))).isPresent()){
+
+            String email = json.get("email").getAsString();
+            if(byteRep.findByEmail(email).isPresent()){
                 
 
                 result.addProperty("message","drop");

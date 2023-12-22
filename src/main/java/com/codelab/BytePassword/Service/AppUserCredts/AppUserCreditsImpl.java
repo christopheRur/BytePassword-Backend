@@ -47,7 +47,7 @@ public class AppUserCreditsImpl implements UserServices {
             bytePwd.setAction(LOGOUT);
             bytePwd.setTimestamp(ToolBox.stampTimeOfLogs());
             bytePwd.setEmail(email);
-            LogProducer.produceLogs(bytePwd);
+            //LogProducer.produceLogs(bytePwd);
 
             return ToolBox.authResponse("Successfully Logged Out.", Boolean.TRUE);
         }
@@ -83,7 +83,7 @@ public class AppUserCreditsImpl implements UserServices {
                         bytePwd.setAction(LOGIN);
                         bytePwd.setTimestamp(ToolBox.stampTimeOfLogs());
                         bytePwd.setEmail(email);
-                        LogProducer.produceLogs(bytePwd);
+                       // LogProducer.produceLogs(bytePwd);
 
 
                         return ToolBox.authResponse("Successfully Logged In.", Boolean.TRUE);
